@@ -12,6 +12,5 @@ mongoose.connect(process.env.DATABASE_URL).then(() => {
 
 app.use(express.json());
 app.listen( PORT, () => console.log('Server OK - PORT: ' + PORT));
-app.get('/', (req, res) => {
-    res.send('Ping');
-})
+
+app.use('/ping' , require('./src/routes'));
