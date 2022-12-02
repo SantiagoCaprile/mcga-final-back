@@ -16,3 +16,4 @@ app.listen( PORT, () => console.log('Server OK - PORT: ' + PORT));
 
 app.use('/ping' , require('./src/routes'));
 app.use('/users' , require('./src/routes/users'));
+app.use('/matches' , require('./src/routes/matches'));
