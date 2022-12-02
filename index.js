@@ -1,4 +1,5 @@
 require("dotenv").config({ path: 'config.env' });
+
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,3 +15,4 @@ app.use(express.json());
 app.listen( PORT, () => console.log('Server OK - PORT: ' + PORT));
 
 app.use('/ping' , require('./src/routes'));
+app.use('/users' , require('./src/routes/users'));
