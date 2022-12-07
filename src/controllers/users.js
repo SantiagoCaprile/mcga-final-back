@@ -14,7 +14,12 @@ exports.validateUser = async (req, res) => {
     const user = await User.findOne({ name: req.body.name });
     if (user && !user.isDeleted) {
       if (user.password === req.body.password) {
-        res.status(200).json({ message: "OK" });
+        res.status(200).json({
+          message: "OK",
+          id: user._id,
+          name: user.name,
+          type: user.type,
+        });
       } else {
         res.status(401).json({ message: "Wrong password" });
       }
