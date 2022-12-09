@@ -2,7 +2,7 @@ require("dotenv").config({ path: 'config.env' });
 const cors = require('cors');
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3100;
+const PORT = process.env.PORT || 3001;
 const mongoose = require('mongoose');
 
 mongoose.connect(process.env.DATABASE_URL).then(() => {
@@ -10,6 +10,8 @@ mongoose.connect(process.env.DATABASE_URL).then(() => {
     }
 )
 .catch((error) => console.log('DB Failed' + error))
+
+app.use(cors());
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
