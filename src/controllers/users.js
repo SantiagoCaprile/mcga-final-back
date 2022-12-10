@@ -1,20 +1,25 @@
 const User = require('../models/Users');
+const jwt = require('jsonwebtoken');
 
-exports.getUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-exports.validateUser = async (req, res) => {
+exports.logIn = async (req, res) => {
   try {
     const user = await User.findOne({ name: req.body.name });
     if (user && !user.isDeleted) {
       if (user.password === req.body.password) {
+        const token = jwt.sign(
+          {
+            id: user._id,
+          },
+          process.env.TOKEN_SECRET,
+          // { expiresIn: "1d" }
+        );
+        const updatedUser = await User.findOneAndUpdate(
+          { name: req.body.name },
+          { token: token },
+          { new: true,}
+        );
         res.status(200).json({
+          token: updatedUser.token,
           message: "OK",
           id: user._id,
           name: user.name,
@@ -26,6 +31,15 @@ exports.validateUser = async (req, res) => {
     } else {
       res.status(404).json({ message: "User not found" });
     }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

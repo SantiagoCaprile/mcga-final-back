@@ -1,19 +1,20 @@
 const {
     getUsers,
-    validateUser,
     createUser,
     updateUser,
     deleteUser,
-    activateUser
+    activateUser,
+    logIn,
 } = require ('../controllers/users.js');
+const checkAuthMiddleware = require ('../routes/validate-token');
 
 const router = require ('express').Router ();
 
-router.get('/', getUsers);
-router.post('/', validateUser);
-router.post('/create', createUser);
-router.put('/:id', updateUser);
-router.put('/activate/:id', activateUser);
-router.delete('/:id', deleteUser);
+router.get('/', checkAuthMiddleware, getUsers);
+router.post('/login', logIn);
+router.post('/create', checkAuthMiddleware, createUser);
+router.put('/:id',checkAuthMiddleware, updateUser);
+router.put('/activate/:id', checkAuthMiddleware, activateUser);
+router.delete('/:id',checkAuthMiddleware, deleteUser);
 
 module.exports = router;
